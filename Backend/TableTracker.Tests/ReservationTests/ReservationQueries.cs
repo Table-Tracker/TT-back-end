@@ -19,6 +19,7 @@ using TableTracker.Application.CQRS.Managers.Queries.GetAllManagers;
 using TableTracker.Application.CQRS.Reservations.Queries.GetAllReservations;
 using TableTracker.Application.CQRS.Reservations.Queries.GetAllReservationsByDate;
 using TableTracker.Application.CQRS.Reservations.Queries.GetAllReservationsByDateAndTime;
+using TableTracker.Application.CQRS.Reservations.Queries.GetAllReservationsForTable;
 
 namespace TableTracker.Tests.ReservationTests
 {
@@ -269,5 +270,70 @@ namespace TableTracker.Tests.ReservationTests
             Assert.True(check);
         }
 
+        [Fact]
+        public async void GetReservationForTable()
+        {
+            var restaurant = new Restaurant { Id = 1, Email = "LMAO@g.com" };
+            var resDto = new RestaurantDTO { Id = 1, Email = "LMAO@g.com" };
+
+            var tables = new List<Table>()
+            {
+                new Table { RestaurantId = 1, Restaurant = restaurant, Id = 1 },
+                new Table { RestaurantId = 1, Restaurant = restaurant, Id = 2 },
+                new Table { RestaurantId = 1, Restaurant = restaurant, Id = 3 },
+                new Table { RestaurantId = 1, Restaurant = restaurant, Id = 4 },
+                new Table { RestaurantId = 1, Restaurant = restaurant, Id = 5 },
+            };
+            var tablesDTO = new List<TableDTO>()
+            {
+                new TableDTO { Restaurant = resDto, Id = 1 },
+                new TableDTO { Restaurant = resDto, Id = 2 },
+                new TableDTO { Restaurant = resDto, Id = 3 },
+                new TableDTO { Restaurant = resDto, Id = 4 },
+                new TableDTO { Restaurant = resDto, Id = 5 },
+            };
+            var reservations = new List<Reservation>()
+            {
+                new Reservation { Id = 1, Table = tables[0], TableId = 1, Date = DateTime.Today },
+                new Reservation { Id = 2, Table = tables[1], TableId = 2, Date = DateTime.Today },
+                new Reservation { Id = 3, Table = tables[2], TableId = 3, Date = DateTime.Today },
+                new Reservation { Id = 4, Table = tables[3], TableId = 4, Date = DateTime.Today },
+                new Reservation { Id = 5, Table = tables[4], TableId = 5, Date = DateTime.Today },
+            };
+            var reservationsDTO = new List<ReservationDTO>()
+            {
+                new ReservationDTO { Id = 1, Table = tablesDTO[0], Date = DateTime.Today },
+            };
+
+            var query = new GetAllReservationsForTableQuery(1, DateTime.Today);
+
+            _reservationRepository
+                .Setup(repo => repo.GetAllReservationsForTable(1, DateTime.Today))
+                .ReturnsAsync(new List<Reservation> { new Reservation { Id = 1, Table = tables[0], TableId = 1, Date = DateTime.Today }, });
+
+            var mapperMock = new Mock<IMapper>();
+            mapperMock.Setup(mapper => mapper.Map<ReservationDTO>(It.IsAny<Reservation>()))
+                 .Returns((Reservation c) => new ReservationDTO
+                 {
+                     Id = c.Id,
+                     Date = c.Date,
+                 });
+
+            var handler = new GetAllReservationsForTableQueryHandler(unitOfWorkMock.Object, mapperMock.Object);
+            var result = await handler.Handle(query, CancellationToken.None);
+
+            var check = true;
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                if (result[i].Id != reservationsDTO[i].Id || result[i].Date != reservationsDTO[i].Date)
+                {
+                    check = false;
+                    break;
+                }
+            }
+
+            Assert.True(check);
+        }
     }
 }
