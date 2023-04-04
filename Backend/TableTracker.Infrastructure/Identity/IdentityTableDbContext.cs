@@ -20,15 +20,15 @@ namespace TableTracker.Infrastructure
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<TableTrackerIdentityUser>(b =>
-            {
-                b.Property(u => u.Id).HasDefaultValueSql("newsequentialid()");
-            });
+            //builder.Entity<TableTrackerIdentityUser>(b =>
+            //{
+            //    b.Property(u => u.Id).HasDefaultValueSql("uuid()");
+            //});
 
-            builder.Entity<TableTrackerIdentityRole>(b =>
-            {
-                b.Property(u => u.Id).HasDefaultValueSql("newsequentialid()");
-            });
+            //builder.Entity<TableTrackerIdentityRole>(b =>
+            //{
+            //    b.Property(u => u.Id).HasDefaultValueSql("uuid()");
+            //});
         }
     }
 }

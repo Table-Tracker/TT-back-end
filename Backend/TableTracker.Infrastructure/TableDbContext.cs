@@ -105,6 +105,12 @@ namespace TableTracker.Infrastructure
                 .Property(x => x.Name)
                 .IsRequired();
 
+            modelBuilder.Entity<Franchise>(entity =>
+            {
+                entity.Property(e => e.Description)
+                    .HasColumnType("longtext");
+            });
+
             #endregion
 
             //#region User

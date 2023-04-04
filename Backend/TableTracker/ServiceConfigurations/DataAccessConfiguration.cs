@@ -14,10 +14,10 @@ namespace TableTracker.ServiceConfigurations
         public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<TableDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("TableTracker")));
+                options.UseMySql(configuration.GetConnectionString("MySQLTableTracker"), ServerVersion.AutoDetect(configuration.GetConnectionString("MySQLTableTracker"))));
 
             services.AddDbContext<IdentityTableDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("IdentityTableTracker")));
+                options.UseMySql(configuration.GetConnectionString("MySQLIdentityTableTracker"), ServerVersion.AutoDetect(configuration.GetConnectionString("MySQLIdentityTableTracker"))));
 
             services.AddScoped<IUnitOfWork<long>, UnitOfWork<long>>(serviceProvider =>
             {
