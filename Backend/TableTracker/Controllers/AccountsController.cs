@@ -47,16 +47,18 @@ namespace TableTracker.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserForAuthenticationDTO userForAuthentication)
         {
-            var user = await _userManager.FindByNameAsync(userForAuthentication.Email);
+            var user = await _userManager.FindByEmailAsync(userForAuthentication.Email);
 
             if (user is null || !await _userManager.CheckPasswordAsync(user, userForAuthentication.Password))
             {
                 return Unauthorized(new AuthResponseDTO { ErrorMessage = "Invalid Authentication" });
             }
 
-            var userDTO = _mapper.Map<UserDTO>(await _unitOfWork
-                .GetRepository<IUserRepository>()
-                .GetUserByEmail(user.Email));
+            var visitorDTO = _mapper.Map<VisitorDTO>(await _unitOfWork
+                .GetRepository<IVisitorRepository>()
+                .GetVisitorByEmail(user.Email));
+
+            var userDTO = _mapper.Map<UserDTO>(visitorDTO);
 
             var signingCredentials = _jwtHandler.GetSigningCredentials();
             var claims = _jwtHandler.GetClaims(user, userDTO);

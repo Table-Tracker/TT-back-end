@@ -12,5 +12,6 @@ namespace TableTracker.Domain.Interfaces.Repositories
         Task<ICollection<Visitor>> FilterVisitors(string filter);
 
         Task<ICollection<Restaurant>> FindVisitorFavouritesByVisitorId(long visitorId);
+        Task<Visitor> GetVisitorByEmail(string email);
     }
 }
