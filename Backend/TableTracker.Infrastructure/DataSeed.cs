@@ -355,7 +355,7 @@ namespace TableTracker.Infrastructure
             {
                 //TODO link IdentityUsers
 
-                for (int i = 0; i < 10; i++)
+                for (int i = 10; i < 20; i++)
                 {
                     visitors.Add(new Visitor
                     {
@@ -522,6 +522,7 @@ namespace TableTracker.Infrastructure
             await context.SaveChangesAsync();
 
             await identityContext.SaveChangesAsync();
+
         }
     }
 }

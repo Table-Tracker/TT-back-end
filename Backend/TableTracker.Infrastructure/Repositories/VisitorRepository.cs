@@ -82,5 +82,12 @@ namespace TableTracker.Infrastructure.Repositories
 
             return visitor.Favourites;
         }
+
+        public async Task<Visitor> GetVisitorByEmail(string email)
+        {
+            return await _context
+                .Set<Visitor>()
+                .FirstOrDefaultAsync(x => x.Email == email);
+        }
     }
 }
