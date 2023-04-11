@@ -1,0 +1,82 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET CI
+
+on:
+  push:
+  pull_request:
+   # branches: [ "main", "develop" ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 5.0.x
+
+    - uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget
+  
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Install tools
+      run: |
+        dotnet new tool-manifest
+        dotnet tool install coverlet.console
+        dotnet add package TableTracker.Tests/TableTracker.Tests.csproj JunitXml.TestLogger
+      
+    - name: Build
+      run: >
+        dotnet build 
+        --no-restore 
+        --configuration Release 
+        --output "$(pwd)/Release" 
+        --no-incremental
+        
+    - name: Test
+      run: >
+        dotnet coverlet Release/ 
+        --target 'dotnet'
+        --targetargs "test --configuration Release --output Release --no-build --logger:\"trx;LogFilePrefix=testResults\" --results-directory \"$(pwd)/TestResults\"" 
+        --format opencover 
+        --format cobertura 
+        --output ./coverlet/
+        
+    - name: Code Coverage Report
+      uses: irongut/CodeCoverageSummary@v1.3.0
+      with:
+        filename: coverlet/coverage.cobertura.xml
+        badge: true
+        fail_below_min: false
+        format: markdown
+        hide_branch_rate: false
+        hide_complexity: true
+        indicators: true
+        output: both
+        thresholds: '60 80'
+
+    #- name: Add Coverage PR Comment
+    #  uses: marocchino/sticky-pull-request-comment@v2
+    #  if: github.event_name == 'pull_request'
+    #  with:
+    #    recreate: true
+    #    path: code-coverage-results.md
+        
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()    # run this step even if previous step failed
+      with:
+        name: VSTest Tests         # Name of the check run which will be created
+        path: TestResults/*.trx    # Path to test results
+        reporter: dotnet-trx       # Format of test results
