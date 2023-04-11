@@ -34,7 +34,6 @@ jobs:
       run: |
         dotnet new tool-manifest
         dotnet tool install coverlet.console
-        dotnet add package TableTracker.Tests/TableTracker.Tests.csproj JunitXml.TestLogger
       
     - name: Build
       run: >
