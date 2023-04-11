@@ -7,11 +7,15 @@ jobs:
   report:
     runs-on: ubuntu-latest
     steps:
+    - name: Download Artifacts  # I've tried with and without this, makes no difference
+      uses: actions/download-artifact@v2
+      with:
+        name: test-results
+
     - run: ls -la
 
     - uses: dorny/test-reporter@v1
       with:
-        artifact: test-results            # artifact name
         name: VSTest Tests                # Name of the check run which will be created
         path: 'TestResults/*.trx'         # Path to test results (inside artifact .zip)
         reporter: dotnet-trx              # Format of test results

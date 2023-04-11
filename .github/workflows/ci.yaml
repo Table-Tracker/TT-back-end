@@ -58,8 +58,6 @@ jobs:
         --format cobertura 
         --output ./coverlet/
     
-    - run: ls -la TestResults coverlet
-    
     - name: Archive code coverage results
       uses: actions/upload-artifact@v3
       with:
