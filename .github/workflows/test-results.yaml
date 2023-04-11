@@ -1,10 +1,8 @@
 
 name: 'Test Report'
-on:
-  workflow_run:
-    workflows: ['.NET CI']                # runs after CI workflow
-    types:
-      - completed
+on: 
+  workflow_call:
+
 jobs:
   report:
     runs-on: ubuntu-latest
