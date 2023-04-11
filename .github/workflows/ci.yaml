@@ -83,7 +83,7 @@ jobs:
     
   report:
     uses: ./.github/workflows/test-results.yaml
-
+    needs: [build-test]
 
     #- name: Add Coverage PR Comment
     #  uses: marocchino/sticky-pull-request-comment@v2
