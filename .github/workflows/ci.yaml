@@ -13,6 +13,7 @@ jobs:
 
     permissions:
       checks: write
+      pull-requests: write
   
     runs-on: ubuntu-latest
 
@@ -93,10 +94,10 @@ jobs:
         path: 'TestResults/*.trx'         # Path to test results (inside artifact .zip)
         reporter: dotnet-trx              # Format of test results
 
-    #- name: Add Coverage PR Comment
-    #  uses: marocchino/sticky-pull-request-comment@v2
-    #  if: github.event_name == 'pull_request'
-    #  with:
-    #    recreate: true
-    #    path: code-coverage-results.md
+    - name: Add Coverage PR Comment
+      uses: marocchino/sticky-pull-request-comment@v2
+      if: github.event_name == 'pull_request'
+      with:
+        recreate: true
+        path: code-coverage-results.md
 
