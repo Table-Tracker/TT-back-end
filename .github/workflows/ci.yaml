@@ -10,6 +10,10 @@ on:
 
 jobs:
   build-test:
+
+    permissions:
+      checks: write
+  
     runs-on: ubuntu-latest
 
     steps:
@@ -83,7 +87,6 @@ jobs:
   #   uses: ./.github/workflows/test-results.yaml
   #   needs: [build-test]
     - name: Code Tests Report
-      permissions: write-all
       uses: dorny/test-reporter@v1
       with:
         name: VSTest Tests                # Name of the check run which will be created
