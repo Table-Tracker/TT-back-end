@@ -42,17 +42,17 @@ jobs:
         --configuration Release 
         --output "$(pwd)/Release" 
         --no-incremental
-        
+
     - name: Test
       run: >
         dotnet coverlet Release/ 
         --target 'dotnet'
         --targetargs "test 
-          --configuration Release 
-          --output Release 
-          --no-build 
-          --logger:\"trx;LogFilePrefix=testResults\" 
-          --results-directory \"$(pwd)/TestResults\"" 
+        --configuration Release 
+        --output Release 
+        --no-build 
+        --logger:\"trx;LogFilePrefix=testResults\" 
+        --results-directory \"$(pwd)/TestResults\"" 
         --format opencover 
         --format cobertura 
         --output ./coverlet/
