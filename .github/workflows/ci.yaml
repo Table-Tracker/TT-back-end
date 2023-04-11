@@ -87,7 +87,7 @@ jobs:
         thresholds: '60 80'
     
     - name: Generate report
-      uses: .github/workflows/test-results.yaml
+      uses: ./.github/workflows/test-results.yaml
 
 
     #- name: Add Coverage PR Comment
