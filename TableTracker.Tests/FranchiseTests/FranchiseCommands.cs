@@ -19,6 +19,7 @@ using TableTracker.Application.CQRS.Cuisines.Commands.DeleteCuisine;
 using TableTracker.Application.CQRS.Franchises.Commands.DeleteFranchise;
 using TableTracker.Application.CQRS.Cuisines.Commands.UpdateCuisine;
 using TableTracker.Application.CQRS.Franchises.Commands.UpdateFranchise;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TableTracker.Tests.FranchiseTests
 {

@@ -3,6 +3,7 @@ using MediatR;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -40,15 +41,6 @@ namespace TableTracker.Tests.CuisineTests
         public async void GetCuisineByName()
         {
             var cuisineName = "Ukrainian";
-
-            //var entities = new List<Cuisine>()
-            //{
-            //    new Cuisine { CuisineName = "International" },
-            //    new Cuisine { CuisineName = "Ukranian" },
-            //    new Cuisine { CuisineName = "Polish" },
-            //    new Cuisine { CuisineName = "English" },
-            //    new Cuisine { CuisineName = "Italian" },
-            //};
 
             var query = new GetCuisineByNameQuery("Ukrainian");
 

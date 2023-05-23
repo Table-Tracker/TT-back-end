@@ -17,6 +17,7 @@ using TableTracker.Application.CQRS.Franchises.Queries.FindFranchiseById;
 using TableTracker.Application.CQRS.Franchises.Queries.GetFranchiseByName;
 using TableTracker.Application.CQRS.Cuisines.Queries.GetAllCuisines;
 using TableTracker.Application.CQRS.Franchises.Queries.GetAllFranchises;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TableTracker.Tests.FranchiseTests
 {
