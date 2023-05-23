@@ -1,0 +1,35 @@
+version: '3.8'
+ 
+services:
+  db1:
+    image: mysql:5.7
+    container_name: db1
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE_DEFAULT}
+      MYSQL_USER: ${MYSQL_USER_DEFAULT}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD_DEFAULT}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_DEFAULT}
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db1:/var/lib/mysql
+    env_file:
+      - ./project-variables.env
+
+  db2:
+    image: mysql:5.7
+    container_name: db2
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE_IDENTITY}
+      MYSQL_USER: ${MYSQL_USER_IDENTITY}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD_IDENTITY}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_IDENTITY}
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./db2:/var/lib/mysql
+    env_file:
+      - ./project-variables.env
+
