@@ -35,10 +35,10 @@ namespace TableTracker
                 scope.ServiceProvider
                     .GetRequiredService<RoleManager<TableTrackerIdentityRole>>());
 
-            await seed.SeedData(dbContext, identityDbContext);
-
             dbContext.Database.Migrate();
             identityDbContext.Database.Migrate();
+
+            await seed.SeedData(dbContext, identityDbContext);
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
