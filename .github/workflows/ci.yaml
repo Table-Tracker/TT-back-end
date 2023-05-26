@@ -38,7 +38,7 @@ jobs:
       run: >
         dotnet publish
         --configuration Release
-        --property:PublishDir=Release
+        --property:PublishDir="$(pwd)/Release"
 
     - name: Archive builds resuls
       uses: actions/upload-artifact@v3
