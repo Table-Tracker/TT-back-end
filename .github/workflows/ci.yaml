@@ -73,9 +73,9 @@ jobs:
           coverlet/
           TestResults/
 
-  report:
-    uses: ./.github/workflows/test-results.yaml
-    needs: [build]
-    with:
-      artifact_name: ${{ env.PROJECT_NAME }}-tests-${{ env.ARTIFACT_ID }}
+  # report:
+  #   uses: ./.github/workflows/test-results.yaml
+  #   needs: [build]
+  #   with:
+  #     artifact_name: ${{ env.PROJECT_NAME }}-tests-${{ env.ARTIFACT_ID }}
 
