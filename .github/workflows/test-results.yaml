@@ -2,9 +2,6 @@ name: "Test Report"
 on:
   workflow_call:
 
-permissions:
-  checks: write
-  pull-requests: write
 
 env:
   PROJECT_NAME: "tt-backend"
