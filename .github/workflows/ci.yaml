@@ -38,7 +38,7 @@ jobs:
       run: >
         dotnet publish
         --configuration Release
-        --property:PublishDir=DIR Release
+        --property:PublishDir=Release
 
     - name: Archive builds resuls
       uses: actions/upload-artifact@v3
@@ -73,7 +73,7 @@ jobs:
           coverlet/
           TestResults/
 
-  report:
+  call_report:
     uses: ./.github/workflows/test-results.yaml
     needs: [build]
     permissions:

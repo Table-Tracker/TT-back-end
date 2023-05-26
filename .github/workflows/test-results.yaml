@@ -8,9 +8,19 @@ env:
   ARTIFACT_ID: ${{ github.run_number }}-${{ github.sha }}
 
 jobs:
-  report:
+  test_results:
     runs-on: ubuntu-latest
     steps:
+      - uses: dorny/test-reporter@v1
+        with:
+          artifact: ${{ env.PROJECT_NAME }}-tests-${{ env.ARTIFACT_ID }}
+          name: VSTest Tests # Name of the check run which will be created
+          path: "TestResults/*.trx" # Path to test results (inside artifact .zip)
+          reporter: dotnet-trx # Format of test results
+
+    code_coverage:
+      runs-on: ubuntu-latest
+      steps:
       - name: DEBUG files
         run: ls -la
 
@@ -21,13 +31,6 @@ jobs:
             
       - name: DEBUG files
         run: ls -la
-  
-      - uses: dorny/test-reporter@v1
-        with:
-          artifact: ${{ env.PROJECT_NAME }}-tests-${{ env.ARTIFACT_ID }}
-          name: VSTest Tests # Name of the check run which will be created
-          path: "TestResults/*.trx" # Path to test results (inside artifact .zip)
-          reporter: dotnet-trx # Format of test results
 
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
