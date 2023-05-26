@@ -1,14 +1,14 @@
 name: "Test Report"
 on:
   workflow_call:
-    inputs:
-      artifact_name:
-        required: true
-        type: string
+
 permissions:
   checks: write
   pull-requests: write
-  
+
+env:
+  PROJECT_NAME: "tt-backend"
+  ARTIFACT_ID: ${{ github.run_number }}-${{ github.sha }}
 
 jobs:
   report:
@@ -20,14 +20,14 @@ jobs:
       - name: Download test results
         uses: actions/download-artifact@v3
         with:
-          name: ${{inputs.artifact_name}}
+          name: ${{ env.PROJECT_NAME }}-tests-${{ env.ARTIFACT_ID }}
             
       - name: DEBUG files
         run: ls -la
   
       - uses: dorny/test-reporter@v1
         with:
-          artifact: ${{inputs.artifact_name}}
+          artifact: ${{ env.PROJECT_NAME }}-tests-${{ env.ARTIFACT_ID }}
           name: VSTest Tests # Name of the check run which will be created
           path: "TestResults/*.trx" # Path to test results (inside artifact .zip)
           reporter: dotnet-trx # Format of test results
