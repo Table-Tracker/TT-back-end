@@ -6,11 +6,12 @@ name: '.NET CI'
 on:
   push:
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
 
 env:
   PROJECT_NAME: "tt-backend"
-  ARTIFACT_ID: ${{ github.run_number }}-${{ github.sha }}
+  BUILD_ARTIFACT_ID: ${{ env.PROJECT_NAME }}-${{ github.run_number }}-${{ github.sha }}
+  TESTS_ARTIFACT_ID: ${{ env.PROJECT_NAME }}-tests-${{ github.run_number }}-${{ github.sha }}
 
 jobs:
   build:
@@ -43,7 +44,7 @@ jobs:
     - name: Archive builds resuls
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ env.PROJECT_NAME }}-${{ env.ARTIFACT_ID }}
+        name: ${{ BUILD_ARTIFACT_ID }}
         path: Release
 
     - name: Install tools
@@ -68,7 +69,7 @@ jobs:
     - name: Archive code coverage results
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ env.PROJECT_NAME }}-tests-${{ env.ARTIFACT_ID }}
+        name: ${{ TESTS_ARTIFACT_ID }}
         path: |
           coverlet/
           TestResults/
@@ -79,4 +80,11 @@ jobs:
     permissions:
       checks: write
       pull-requests: write
+
+  call_linter:
+    uses: ./.github/workflows/super-linter.yaml
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
 

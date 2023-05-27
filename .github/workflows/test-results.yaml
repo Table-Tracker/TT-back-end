@@ -1,19 +1,25 @@
-name: "Test Report"
+name: 'Test Reports'
+
 on:
   workflow_call:
 
-
 env:
   PROJECT_NAME: "tt-backend"
-  ARTIFACT_ID: ${{ github.run_number }}-${{ github.sha }}
+  TESTS_ARTIFACT_ID: ${{ env.PROJECT_NAME }}-tests-${{ github.run_number }}-${{ github.sha }}
 
 jobs:
   test_results:
     runs-on: ubuntu-latest
     steps:
+
+      - name: Download test results
+        uses: actions/download-artifact@v3
+        with:
+          name: 
+
       - uses: dorny/test-reporter@v1
         with:
-          artifact: ${{ env.PROJECT_NAME }}-tests-${{ env.ARTIFACT_ID }}
+          artifact: ${{ TESTS_ARTIFACT_ID}}
           name: VSTest Tests # Name of the check run which will be created
           path: "TestResults/*.trx" # Path to test results (inside artifact .zip)
           reporter: dotnet-trx # Format of test results
@@ -21,16 +27,10 @@ jobs:
   code_coverage:
     runs-on: ubuntu-latest
     steps:
-    - name: DEBUG files
-      run: ls -la
-
     - name: Download test results
       uses: actions/download-artifact@v3
       with:
-        name: ${{ env.PROJECT_NAME }}-tests-${{ env.ARTIFACT_ID }}
-          
-    - name: DEBUG files
-      run: ls -la
+        name: ${{ TESTS_ARTIFACT_ID }}
 
     - name: Code Coverage Report
       uses: irongut/CodeCoverageSummary@v1.3.0
