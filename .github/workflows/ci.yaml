@@ -82,6 +82,7 @@ jobs:
 
   call_linter:
     uses: ./.github/workflows/super-linter.yml
+    if: github.event_name == 'pull_request'
     permissions:
       contents: read
       packages: read
