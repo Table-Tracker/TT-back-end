@@ -19,7 +19,7 @@ jobs:
 
       - uses: dorny/test-reporter@v1
         with:
-          artifact: ${{ TESTS_ARTIFACT_ID}}
+          artifact: ${{ env.TESTS_ARTIFACT_ID}}
           name: VSTest Tests # Name of the check run which will be created
           path: "TestResults/*.trx" # Path to test results (inside artifact .zip)
           reporter: dotnet-trx # Format of test results
@@ -30,7 +30,7 @@ jobs:
     - name: Download test results
       uses: actions/download-artifact@v3
       with:
-        name: ${{ TESTS_ARTIFACT_ID }}
+        name: ${{ env.TESTS_ARTIFACT_ID }}
 
     - name: Code Coverage Report
       uses: irongut/CodeCoverageSummary@v1.3.0

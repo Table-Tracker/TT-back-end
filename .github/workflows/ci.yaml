@@ -43,7 +43,7 @@ jobs:
     - name: Archive builds resuls
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ BUILD_ARTIFACT_ID }}
+        name: ${{ env.BUILD_ARTIFACT_ID }}
         path: Release
 
     - name: Install tools
@@ -68,7 +68,7 @@ jobs:
     - name: Archive code coverage results
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ TESTS_ARTIFACT_ID }}
+        name: ${{ env.TESTS_ARTIFACT_ID }}
         path: |
           coverlet/
           TestResults/
