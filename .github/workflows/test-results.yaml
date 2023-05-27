@@ -15,7 +15,7 @@ jobs:
       - name: Download test results
         uses: actions/download-artifact@v3
         with:
-          name: 
+          name: ${{ env.TESTS_ARTIFACT_ID}}
 
       - uses: dorny/test-reporter@v1
         with:
