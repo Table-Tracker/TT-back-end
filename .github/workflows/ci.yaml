@@ -13,8 +13,13 @@ env:
   TESTS_ARTIFACT_ID: tt-backend-${{ github.ref_name }}-${{ github.run_number }}-tests
 
 jobs:
-  build:
-
+  
+  build_code:
+  
+    permissions:
+     checks: write
+     pull-requests: write
+    
     runs-on: ubuntu-latest
     steps:
       
@@ -73,7 +78,8 @@ jobs:
           coverlet/
           TestResults/
 
-    - uses: dorny/test-reporter@v1
+    - name: Generate Tests Report
+      uses: dorny/test-reporter@v1
       with:
         name: VSTest Tests # Name of the check run which will be created
         path: "TestResults/*.trx" # Path to test results (inside artifact .zip)
