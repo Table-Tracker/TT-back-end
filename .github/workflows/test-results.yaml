@@ -8,22 +8,6 @@ env:
   TESTS_ARTIFACT_ID: tt-backend-${{ github.ref_name }}-${{ github.run_number }}-tests
 
 jobs:
-  test_results:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Download test results
-      uses: actions/download-artifact@v3
-      with:
-        name: ${{ env.TESTS_ARTIFACT_ID}}
-
-    - name: DEBUG files
-      run: ls -la
-
-    - uses: dorny/test-reporter@v1
-      with:
-        name: VSTest Tests # Name of the check run which will be created
-        path: "TestResults/*.trx" # Path to test results (inside artifact .zip)
-        reporter: dotnet-trx # Format of test results
 
   code_coverage:
     runs-on: ubuntu-latest
