@@ -82,7 +82,7 @@ jobs:
       pull-requests: write
 
   call_linter:
-    uses: ./.github/workflows/super-linter.yaml
+    uses: ./.github/workflows/super-linter.yml
     permissions:
       contents: read
       packages: read
