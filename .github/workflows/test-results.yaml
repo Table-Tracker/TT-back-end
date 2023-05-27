@@ -4,8 +4,8 @@ on:
   workflow_call:
 
 env:
-  PROJECT_NAME: "tt-backend"
-  TESTS_ARTIFACT_ID: ${{ env.PROJECT_NAME }}-tests-${{ github.run_number }}-${{ github.sha }}
+  BUILD_ARTIFACT_ID: ${{github.repository}}-${{ github.ref_name }}-${{ github.run_number }}
+  TESTS_ARTIFACT_ID: ${{github.repository}}-${{ github.ref_name }}-${{ github.run_number }}-tests
 
 jobs:
   test_results:

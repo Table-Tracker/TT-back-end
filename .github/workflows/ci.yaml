@@ -9,9 +9,8 @@ on:
     branches: [ main, develop ]
 
 env:
-  PROJECT_NAME: "tt-backend"
-  BUILD_ARTIFACT_ID: ${{ env.PROJECT_NAME }}-${{ github.run_number }}-${{ github.sha }}
-  TESTS_ARTIFACT_ID: ${{ env.PROJECT_NAME }}-tests-${{ github.run_number }}-${{ github.sha }}
+  BUILD_ARTIFACT_ID: ${{github.repository}}-${{ github.ref_name }}-${{ github.run_number }}
+  TESTS_ARTIFACT_ID: ${{github.repository}}-${{ github.ref_name }}-${{ github.run_number }}-tests
 
 jobs:
   build:
