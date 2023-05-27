@@ -87,7 +87,7 @@ jobs:
 
   call_report:
     uses: ./.github/workflows/test-results.yaml
-    needs: [build]
+    needs: [build_code]
     permissions:
       checks: write
       pull-requests: write
