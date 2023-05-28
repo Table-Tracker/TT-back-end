@@ -17,13 +17,13 @@ namespace TableTracker.ServiceConfigurations
 
 
             var ttEnvConnectionString = $"Server={_configuration["MYSQL_SERVERNAME"]}; " +
-                $"port={_configuration["MYSQL__PORT"]};" +
+                $"port={_configuration["MYSQL_PORT"]};" +
                 $" Database={_configuration["MYSQL_DATABASE"]};" +
                 $"UserId={_configuration["MYSQL_USER"]};" +
                 $"Password={_configuration["MYSQL_PASSWORD"]};";
 
             var ttIdentityEnvConnectionString = $"Server={_configuration["MYSQL_SERVERNAME"]}; " +
-                $"port={_configuration["IDENTITY_MYSQL_PORT"]};" +
+                $"port={_configuration["MYSQL_PORT"]};" +
                 $" Database={_configuration["IDENTITY_MYSQL_DATABASE"]};" +
                 $"UserId={_configuration["MYSQL_USER"]};" +
                 $"Password={_configuration["MYSQL_PASSWORD"]};";
