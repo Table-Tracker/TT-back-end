@@ -13,8 +13,13 @@ env:
   TESTS_ARTIFACT_ID: tt-backend-${{ github.ref_name }}-${{ github.run_number }}-tests
 
 jobs:
-  build:
-
+  
+  build_code:
+  
+    permissions:
+     checks: write
+     pull-requests: write
+    
     runs-on: ubuntu-latest
     steps:
       
@@ -39,6 +44,7 @@ jobs:
         dotnet publish
         --configuration Release
         --property:PublishDir="$(pwd)/Release"
+        --os linux
 
     - name: Archive builds resuls
       uses: actions/upload-artifact@v3
@@ -73,7 +79,8 @@ jobs:
           coverlet/
           TestResults/
 
-    - uses: dorny/test-reporter@v1
+    - name: Generate Tests Report
+      uses: dorny/test-reporter@v1
       with:
         name: VSTest Tests # Name of the check run which will be created
         path: "TestResults/*.trx" # Path to test results (inside artifact .zip)
@@ -81,7 +88,7 @@ jobs:
 
   call_report:
     uses: ./.github/workflows/test-results.yaml
-    needs: [build]
+    needs: [build_code]
     permissions:
       checks: write
       pull-requests: write
