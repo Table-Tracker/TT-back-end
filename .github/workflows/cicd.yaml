@@ -111,6 +111,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: ${{ env.BUILD_ARTIFACT_ID }}
+          path: ${{ env.BUILD_ARTIFACT_ID }}
   
       - run: ls -al
       
