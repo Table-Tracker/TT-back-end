@@ -127,4 +127,7 @@ jobs:
             sudo systemctl stop aspnet
             sudo rm -rf  "${{ secrets.REMOTE_TARGET }}*"
           SCRIPT_AFTER: |
-            sudo systemctl start aspnet   
+            sudo systemctl start aspnet
+        
+      - name: Health Check app
+        run: curl localhost:5000/api/cuisines
