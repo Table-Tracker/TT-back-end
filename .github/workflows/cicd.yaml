@@ -9,8 +9,8 @@ on:
     branches: [ main, develop ]
 
 env:
-  BUILD_ARTIFACT_ID: tt-backend-${{ github.ref_name }}-${{ github.run_number }}
-  TESTS_ARTIFACT_ID: tt-backend-${{ github.ref_name }}-${{ github.run_number }}-tests
+  BUILD_ARTIFACT_ID: tt-backend-${{ github.run_id }}
+  TESTS_ARTIFACT_ID: tt-backend-${{ github.run_id }}-tests
 
 jobs:
   
