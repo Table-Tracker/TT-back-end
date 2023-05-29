@@ -132,4 +132,4 @@ jobs:
       - name: Health Check app
         run: |
           sleep 10
-          curl localhost:5000/api/cuisines
+          curl ${{ secrets.REMOTE_HOST }}:${{ secrets.BACKEND_PORT }}/api/cuisines
