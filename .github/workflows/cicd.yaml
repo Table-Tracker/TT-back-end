@@ -130,4 +130,6 @@ jobs:
             sudo systemctl start aspnet
         
       - name: Health Check app
-        run: curl localhost:5000/api/cuisines
+        run: |
+          sleep 10
+          curl localhost:5000/api/cuisines
