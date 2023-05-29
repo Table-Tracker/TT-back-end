@@ -9,8 +9,8 @@ on:
     branches: [ main, develop ]
 
 env:
-  BUILD_ARTIFACT_ID: tt-backend-${{ github.ref_name }}-${{ github.run_number }}
-  TESTS_ARTIFACT_ID: tt-backend-${{ github.ref_name }}-${{ github.run_number }}-tests
+  BUILD_ARTIFACT_ID: tt-backend-${{ github.run_id }}
+  TESTS_ARTIFACT_ID: tt-backend-${{ github.run_id }}-tests
 
 jobs:
   
@@ -113,8 +113,6 @@ jobs:
           name: ${{ env.BUILD_ARTIFACT_ID }}
           path: ${{ env.BUILD_ARTIFACT_ID }}
   
-      - run: ls -al
-      
       - name: Deploy app to EC2
         uses: easingthemes/ssh-deploy@main
         env:
