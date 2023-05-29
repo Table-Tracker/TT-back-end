@@ -5,13 +5,13 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TableTracker", "TableTracker\TableTracker.csproj", "{6856AF16-F090-44DE-A020-240347C80249}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableTracker.Tests", "TableTracker.Tests\TableTracker.Tests.csproj", "{BD37D48D-38DF-4593-9DD5-7AA7A9EC8C91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TableTracker.Tests", "TableTracker.Tests\TableTracker.Tests.csproj", "{BD37D48D-38DF-4593-9DD5-7AA7A9EC8C91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableTracker.Application", "TableTracker.Application\TableTracker.Application.csproj", "{04016283-FB50-4FC6-B713-5C6BB2C0F212}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TableTracker.Application", "TableTracker.Application\TableTracker.Application.csproj", "{04016283-FB50-4FC6-B713-5C6BB2C0F212}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableTracker.Infrastructure", "TableTracker.Infrastructure\TableTracker.Infrastructure.csproj", "{9D9F1F6B-B797-4524-979A-CAFB4E7EEE7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TableTracker.Infrastructure", "TableTracker.Infrastructure\TableTracker.Infrastructure.csproj", "{9D9F1F6B-B797-4524-979A-CAFB4E7EEE7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableTracker.Domain", "TableTracker.Domain\TableTracker.Domain.csproj", "{AEC97264-3D6C-4349-BE0D-B0B15221420B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TableTracker.Domain", "TableTracker.Domain\TableTracker.Domain.csproj", "{AEC97264-3D6C-4349-BE0D-B0B15221420B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

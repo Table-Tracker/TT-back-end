@@ -15,6 +15,7 @@ using System.Threading;
 using TableTracker.Domain.Enums;
 using TableTracker.Application.CQRS.Cuisines.Commands.DeleteCuisine;
 using TableTracker.Application.CQRS.Cuisines.Commands.UpdateCuisine;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TableTracker.Tests.CuisineTests
 {

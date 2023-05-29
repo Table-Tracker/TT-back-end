@@ -1,21 +1,38 @@
+name: 'Test Reports'
 
-name: 'Test Report'
-on: 
+on:
   workflow_call:
 
+env:
+  BUILD_ARTIFACT_ID: tt-backend-${{ github.ref_name }}-${{ github.run_number }}
+  TESTS_ARTIFACT_ID: tt-backend-${{ github.ref_name }}-${{ github.run_number }}-tests
+
 jobs:
-  report:
+
+  code_coverage:
     runs-on: ubuntu-latest
     steps:
-    - name: Download Artifacts  # I've tried with and without this, makes no difference
-      uses: actions/download-artifact@v2
+    - name: Download test results
+      uses: actions/download-artifact@v3
       with:
-        name: test-results
+        name: ${{ env.TESTS_ARTIFACT_ID }}
 
-    - run: ls -la
-
-    - uses: dorny/test-reporter@v1
+    - name: Code Coverage Report
+      uses: irongut/CodeCoverageSummary@v1.3.0
       with:
-        name: VSTest Tests                # Name of the check run which will be created
-        path: 'TestResults/*.trx'         # Path to test results (inside artifact .zip)
-        reporter: dotnet-trx              # Format of test results
+        filename: coverlet/coverage.cobertura.xml
+        badge: true
+        fail_below_min: false
+        format: markdown
+        hide_branch_rate: false
+        hide_complexity: true
+        indicators: true
+        output: both
+        thresholds: "60 80"
+
+    - name: Add Coverage PR Comment
+      uses: marocchino/sticky-pull-request-comment@v2
+      if: github.event_name == 'pull_request'
+      with:
+        recreate: true
+        path: code-coverage-results.md

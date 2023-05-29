@@ -1,0 +1,127 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: '.NET CI/CD'
+
+on:
+  push:
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  BUILD_ARTIFACT_ID: tt-backend-${{ github.ref_name }}-${{ github.run_number }}
+  TESTS_ARTIFACT_ID: tt-backend-${{ github.ref_name }}-${{ github.run_number }}-tests
+
+jobs:
+  
+  build_code:
+  
+    permissions:
+     checks: write
+     pull-requests: write
+    
+    runs-on: ubuntu-latest
+    steps:
+      
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+
+    - name: Cache Dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Build
+      run: >
+        dotnet publish
+        --configuration Release
+        --property:PublishDir="$(pwd)/Release"
+        --os linux
+
+    - name: Archive builds resuls
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.BUILD_ARTIFACT_ID }}
+        path: Release
+
+    - name: Install tools
+      run: |
+        dotnet new tool-manifest
+        dotnet tool install coverlet.console
+
+    - name: Test
+      run: >
+        dotnet coverlet Release/
+        --target 'dotnet'
+        --targetargs "test TableTracker.Tests/TableTracker.Tests.csproj 
+        --configuration Release 
+        --output Release 
+        --no-build 
+        --logger:\"trx;LogFilePrefix=testResults\" 
+        --results-directory \"$(pwd)/TestResults\""
+        --format opencover
+        --format cobertura
+        --output ./coverlet/
+
+    - name: Archive code coverage results
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.TESTS_ARTIFACT_ID }}
+        path: |
+          coverlet/
+          TestResults/
+
+    - name: Generate Tests Report
+      uses: dorny/test-reporter@v1
+      with:
+        name: VSTest Tests # Name of the check run which will be created
+        path: "TestResults/*.trx" # Path to test results (inside artifact .zip)
+        reporter: dotnet-trx # Format of test results
+
+  call_report:
+    uses: ./.github/workflows/test-results.yaml
+    needs: [build_code]
+    permissions:
+      checks: write
+      pull-requests: write
+
+  call_linter:
+    uses: ./.github/workflows/super-linter.yml
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
+
+  deploy_app:
+    runs-on: ubuntu-latest
+    needs: [build_code]
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.BUILD_ARTIFACT_ID }}
+          
+      - name: Deploy app to EC2
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SOURCE: "${{ env.BUILD_ARTIFACT_ID }}/"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ secrets.REMOTE_TARGET }}
+          SCRIPT_BEFORE: |
+            sudo systemctl stop aspnet
+            sudo rm -rf  ${{ secrets.REMOTE_TARGET }}
+          SCRIPT_AFTER: |
+            sudo systemctl start aspnet   

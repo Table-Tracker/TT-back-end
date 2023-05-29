@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using System;
-
+using System.Threading.Tasks;
 using TableTracker.Infrastructure;
 using TableTracker.Infrastructure.Identity;
 
@@ -13,14 +13,14 @@ namespace TableTracker
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            Migrate(host.Services);
+            await MigrateAsync(host.Services);
             host.Run();
         }
 
-        public static void Migrate(IServiceProvider serviceProvider)
+        public static async Task MigrateAsync(IServiceProvider serviceProvider)
         {
             using var scope = serviceProvider
                 .GetRequiredService<IServiceScopeFactory>()
@@ -35,10 +35,10 @@ namespace TableTracker
                 scope.ServiceProvider
                     .GetRequiredService<RoleManager<TableTrackerIdentityRole>>());
 
-            seed.SeedData(dbContext, identityDbContext).Wait();
-
             dbContext.Database.Migrate();
             identityDbContext.Database.Migrate();
+
+            await seed.SeedData(dbContext, identityDbContext);
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
