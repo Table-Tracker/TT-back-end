@@ -111,7 +111,9 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: ${{ env.BUILD_ARTIFACT_ID }}
-          
+  
+      - run: ls -al
+      
       - name: Deploy app to EC2
         uses: easingthemes/ssh-deploy@main
         env:
@@ -122,6 +124,6 @@ jobs:
           TARGET: ${{ secrets.REMOTE_TARGET }}
           SCRIPT_BEFORE: |
             sudo systemctl stop aspnet
-            sudo rm -rf  ${{ secrets.REMOTE_TARGET }}
+            sudo rm -rf  "${{ secrets.REMOTE_TARGET }}*"
           SCRIPT_AFTER: |
             sudo systemctl start aspnet   
